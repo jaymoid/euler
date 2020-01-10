@@ -25,16 +25,16 @@ dependencies:
 library:
   source-dirs: src
 
-executables:
-  euler-exe:
-    main:                Main.hs
-    source-dirs:         app
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - euler
+# executables:
+#   euler-exe:
+#     main:                Main.hs
+#     source-dirs:         app
+#     ghc-options:
+#     - -threaded
+#     - -rtsopts
+#     - -with-rtsopts=-N
+#     dependencies:
+#     - euler
 
 tests:
   euler-test:
@@ -46,3 +46,4 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - euler
+    - hspec
