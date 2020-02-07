@@ -207,10 +207,10 @@ lcmUsingPrimes = foldl cmp []
 -- natural numbers and the square of the sum.
 
 sumOfSquaresOf :: Integral a => [a] -> a
-sumOfSquaresOf xs = sum $ (\x -> x^2) <$> xs
+sumOfSquaresOf xs = sum $ (\x -> x ^ (2 :: Integer)) <$> xs
 
 squareOfTheSumOf :: Integral a => [a] -> a
-squareOfTheSumOf xs = (\sum' -> sum'^2) $ sum xs
+squareOfTheSumOf xs = (\sum' -> sum' ^ (2 :: Integer)) $ sum xs
 
 diffSumOfSquaresAndSquareOfSums :: Integral a => [a] -> a
 diffSumOfSquaresAndSquareOfSums xs = (squareOfTheSumOf xs) - (sumOfSquaresOf xs) 
@@ -237,10 +237,14 @@ trialDivisionPrimes = catMaybes $ maybePrime <$> [1..]
 
 -- From... 
 -- https://www.cs.hmc.edu/~oneill/papers/Sieve-JFP.pdf
+-- copy of this doc in the materials folder in this project.
+primes :: [Integer]
 primes = sieve [2..]
-sieve (p : xs) = p : sieve [x | x <- xs, x `mod` p > 0]
+  where
+    sieve (p : xs) = p : sieve [x | x <- xs, x `mod` p > 0]
+    sieve [] = undefined 
 
+nthPrimeSeive :: Integer -> Integer
 nthPrimeSeive n = last $ take (fromIntegral n) primes
 
-
--- I am using this as a comparison
+-- I am using this as a comparison 
