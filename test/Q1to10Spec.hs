@@ -32,6 +32,11 @@ testQ1to10 = hspec $ do
       maxPrimeFactor 13195 `shouldBe` Just 29
     it "answer" $ do
       maxPrimeFactor 600851475143 `shouldBe` Just 6857
+    it "sample mpf function" $ 
+      mpfExplained 13195 `shouldBe`  29
+    it "answer mpf function" $ do
+      mpfExplained 600851475143 `shouldBe`  6857
+
 
   describe "Q4" $ do
     it "Sample" $ 
@@ -43,7 +48,7 @@ testQ1to10 = hspec $ do
     it "Sample" $ 
       smallestNumberThatCanBeDividedBy [1..10] `shouldBe` 2520
     it "answer" $ 
-      smallestNumberThatCanBeDividedBy  [1..20] `shouldBe` 232792560
+      smallestNumberThatCanBeDividedBy [1..20] `shouldBe` 232792560
 
   describe "Q6" $ do
     it "Sample: Sum of squares of first ten numbers = 385" $ 
@@ -57,7 +62,7 @@ testQ1to10 = hspec $ do
        \ one hundred natural numbers and the square of the sum. " $ 
       diffSumOfSquaresAndSquareOfSums [1..100] `shouldBe` 25164150
   
-  describe "Q7" $ do
+  describe "Q7 prime spike" $ do
     it "Sample: The first 6 primes are [2, 3, 5, 7, 11, 13]" $ do
       nthPrime 1 `shouldBe` 2
       nthPrime 2 `shouldBe` 3
@@ -67,15 +72,14 @@ testQ1to10 = hspec $ do
       nthPrime 6 `shouldBe` 13
       
   describe "Q7" $ do
-    -- SLOW
-    it "Answer: the 10,001th prime is 104743" $
-      nthPrime 10001 `shouldBe` 104743
+    -- SLOW nthPrime
+    -- it "Answer: the 10,001th prime is 104743" $
+    --   nthPrime 10001 `shouldBe` 104743
     -- FASTER!
     it "Answer: the 10,001th prime is 104743" $
       nthPrimeSeive 10001 `shouldBe` 104743
 
-  let q8Input = 
-    "73167176531330624919225119674426574742355349194934\
+  let q8Input = "73167176531330624919225119674426574742355349194934\
     \96983520312774506326239578318016984801869478851843\
     \85861560789112949495459501737958331952853208805511\
     \12540698747158523863050715693290963295227443043557\
@@ -99,4 +103,15 @@ testQ1to10 = hspec $ do
   describe "Q8" $ do
     it "max 4 adjacent digit product: 9 × 9 × 8 × 9 = 5832." $ 
       maxAdjacentProduct 4 q8Input `shouldBe` 5832
+    
+    it "max 13 adjacent digit product = 23514624000." $ 
+      maxAdjacentProduct 13 q8Input `shouldBe` 23514624000
 
+
+  describe "Q9" $ do 
+    it "Sample: Pythagorean triple where the sum of the sides == 25" $ do
+      pythagoreanTriples 12 `shouldBe` (3,4,5)
+    it "Answer: Pythagorean triple where the sum of the sides == 25" $ do
+      pythagoreanTriples 1000 `shouldBe` (200,375,425)
+    it "Q9 answer" $ do
+      q9 1000 `shouldBe` 31875000

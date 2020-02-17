@@ -36,6 +36,18 @@ isPrime n = (n >= 2) && go n 2
           | n' `eqDiv` divisor = divisor == n'
           | otherwise          = go n' $ divisor + 1
 
+-- Determinng is something is prime by checking it's square root
+-- http://www.counton.org/explorer/primes/checking-if-a-number-is-prime/
+
+-- To check if a number is prime we only need to check factors up to the square root
+-- If any numbers up to the square root are a factor of the number its not prime
+isPrime' :: Integral a => a -> Bool
+isPrime' n = none (eqDiv n) [2..((round . sqrt . fromIntegral) n)] && n > 1
+    
+
+none :: Foldable t => (a -> Bool) -> t a -> Bool
+none f = not . any f
+
 primeFactors :: Integral a => a -> [a]
 primeFactors n = go n 2
   where 

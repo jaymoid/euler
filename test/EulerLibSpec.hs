@@ -8,18 +8,18 @@ libTest = hspec $ do
 
   describe "isPrime" $ do
     it "notPrimes!" $ do
-      isPrime 0 `shouldBe` False
-      isPrime 1 `shouldBe` False
-      isPrime 4 `shouldBe` False
-      isPrime 6 `shouldBe` False
-      isPrime 8 `shouldBe` False
-      isPrime 9 `shouldBe` False
+      isPrime' 0 `shouldBe` False
+      isPrime' 1 `shouldBe` False
+      isPrime' 4 `shouldBe` False
+      isPrime' 6 `shouldBe` False
+      isPrime' 8 `shouldBe` False
+      isPrime' 9 `shouldBe` False
     it "primes" $ do
-      isPrime 2 `shouldBe` True
-      isPrime 3 `shouldBe` True
-      isPrime 5 `shouldBe` True
-      isPrime 7 `shouldBe` True
-      isPrime 11 `shouldBe` True
+      isPrime' 2 `shouldBe` True
+      isPrime' 3 `shouldBe` True
+      isPrime' 5 `shouldBe` True
+      isPrime' 7 `shouldBe` True
+      isPrime' 11 `shouldBe` True
 
   describe "number to digits" $ do
     it "0 = [0]" $ do
@@ -45,6 +45,8 @@ libTest = hspec $ do
     it "5 is [5]" $ primeFactors 5 `shouldBe` [5]
     it "6 is [2,3]" $ primeFactors 6 `shouldBe` [2,3]
     it "8 is [2,2,2]" $ primeFactors 8 `shouldBe` [2,2,2]
+
+    
   
   describe "Lowest Common Multiplier" $ do
     it "1, 1 = 1" $ do lowestCommonMultiplier 1 1 `shouldBe` 1

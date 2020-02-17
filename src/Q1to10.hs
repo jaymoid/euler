@@ -3,8 +3,9 @@ module Q1to10 where
 import EulerLib
 import Data.Function ((&), on)
 import Data.List (maximumBy, null)
-import qualified Data.List.NonEmpty as NonEmpty 
 import Data.Maybe (catMaybes)
+import Data.Char (digitToInt)
+import qualified Data.List.NonEmpty as NonEmpty 
 import Data.Semigroup (Product(..), Max(..), sconcat)
 import Control.Monad (guard)
 import Control.Applicative (liftA2)
@@ -67,14 +68,14 @@ maxPrimeFactor n | n < 2     = Nothing
                           go dividend $ divisor + 1
                        else 
                           go quotient divisor
-             
+
 -- Tidied version of above (0.0170...seconds)
 maxPrimeFactor' :: Integer -> Maybe Integer
 maxPrimeFactor' n = if n < 2 then Nothing else go n 2
-  where 
-    go dividend divisor | dividend < 2             = Just divisor
-                        | dividend `eqDiv` divisor = go (dividend `div` divisor) divisor
-                        | otherwise                = go dividend $ divisor + 1
+  where go dividend divisor | dividend < 2             = Just divisor
+                            | dividend `eqDiv` divisor = go (dividend `div` divisor) divisor
+                            | otherwise                = go dividend $ divisor + 1
+
 
 -- The divMod optimisation + increment calc, makes this run in (0.0091 seconds)
 maxPrimeFactorOptimised :: Integer -> Maybe Integer
@@ -89,6 +90,19 @@ maxPrimeFactorOptimised n = if n < 2 then Nothing else go n 2
         increment | divisor == 2 = 1
                   | otherwise    = 2
 
+-- Rich Prince's tiddler...
+mpf :: Integer -> Integer -> Integer
+mpf i c = if i == c then i else if eqDiv i c then mpf (div i c) c else mpf i (c + 1)
+
+mpfExplained :: Integer -> Integer
+mpfExplained n = go n 2
+  where go n counter =  if (n == counter) then 
+                          n 
+                        else 
+                          if (n `eqDiv` counter) then 
+                            go (n `div` counter) counter
+                          else 
+                            go n (counter + 1)
 
 -- Q4
 
@@ -196,6 +210,12 @@ lcmUsingPrimes = foldl cmp []
                             in  product $ filter ((==) maxPrime) xs
 
 
+-- A Konversion, of Andy's kotlin one liner :)
+-- fun smallestDivisibleNumber(range: LongRange) =
+--         generateSequence(1) { it + 1 }.first { number -> range.none { number % it != 0L } }
+andy xs = take 1 $ filter (\y -> all (\x -> y `eqDiv` x) xs) [1..]
+
+
 -- Q6 
 -- The sum of the squares of the first ten natural numbers is =385
 -- The square of the sum of the first ten natural numbers is =3025
@@ -226,7 +246,9 @@ nthPrime n = last $ take (fromIntegral n) trialDivisionPrimes
 
 trialDivisionPrimes :: Integral a => [a]
 trialDivisionPrimes = catMaybes $ maybePrime <$> [1..]
-  where maybePrime x = if isPrime x then Just x else Nothing
+  where maybePrime x = if isPrime' x then Just x else Nothing
+
+-- ^ this is slower with isPrime as opposed to isPrime'
 
 -- this algorithm is simple but has flaws:
 -- It includes many numbers that can be ruled out (because divisible by 2, 3, 5, or 7)
@@ -248,3 +270,26 @@ nthPrimeSeive :: Integer -> Integer
 nthPrimeSeive n = last $ take (fromIntegral n) primes
 
 -- I am using this as a comparison 
+
+
+-- Q8 
+maxAdjacentProduct :: Int -> [Char] -> Int
+maxAdjacentProduct n chars = go (digitToInt <$> chars) 0
+  where 
+    go :: [Int] -> Int -> Int
+    go xxs@(x:xs) max' = 
+      if (length xxs) < n then 
+        max'
+      else
+        let newProduct = product $ take (n) xxs
+        in go xs $ max max' newProduct
+
+-- Q9 
+pythagoreanTriples :: Integral a => a -> (a,a,a)
+pythagoreanTriples n = head [(a,b,c) | c <- [1..((n `div` 2) +1)], 
+                                  a <- [1..c], 
+                                  b <- [a..c], 
+                                  a+b+c == n, 
+                                  a^2 + b^2 == c^2]
+
+q9 n = (\(a,b,c) -> a*b*c) $ pythagoreanTriples n

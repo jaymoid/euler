@@ -11,8 +11,9 @@ q1to10Benchmarks = defaultMain (
     -- q2Bench <>
     -- q3Bench <>
     -- q4Bench <>
-    -- q5Bench 
-    q7Bench  -- slow!
+    -- q5Bench <>
+    -- q7Bench  -- slow!
+    primeBench
   )
 
 q1Bench = [bench "Q1" $ whnf sumOfThings 1000]
@@ -47,3 +48,8 @@ q7Bench =
     , bench "1th nthPrimeSeive" $ nf nthPrimeSeive (1 :: Integer)
     , bench "10,001th nthPrimeSeive" $ nf nthPrimeSeive (10001 :: Integer)
     ]
+
+primeBench = 
+  [ bench "trial division" $ whnf isPrime (15485863 :: Integer)
+  , bench "sqrt prime" $ whnf isPrime' (15485863 :: Integer)
+  ]
